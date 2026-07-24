@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white p-5">
+    <div class="container card bg-secondary p-4">
+        <h3>Add New Tournament Match</h3>
+        <form action="/admin/add-match" method="POST">
+            <input type="text" name="title" class="form-control mb-2" placeholder="Match Title (e.g. Solo Battle)" required>
+            <input type="number" name="entryFee" class="form-control mb-2" placeholder="Entry Fee (TK)" required>
+            <input type="number" name="prize" class="form-control mb-2" placeholder="Prize Pool (TK)" required>
+            <input type="text" name="time" class="form-control mb-2" placeholder="Match Time (e.g. 9:00 PM)" required>
+            <input type="text" name="map" class="form-control mb-2" placeholder="Map (Bermuda/Purgatory)" required>
+            <select name="version" class="form-control mb-2">
+                <option value="Solo">Solo</option>
+                <option value="Duo">Duo</option>
+                <option value="Squad">Squad</option>
+            </select>
+            <button class="btn btn-success w-100">Publish Match</button>
+        </form>
+    </div>
+</body>
+</html>
