@@ -16,10 +16,16 @@ app.use(session({
 }));
 
 // Database Connection
-mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('Connected to MongoDB Atlas'))
-.catch(err => console.log('DB Error:', err));
+const dbURI = process.env.MONGODB_URI;
+if (!dbURI) {
+    console.error("MONGODB_URI is not defined in environment variables!");
+}
 
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log('Connected to MongoDB Atlas'))
+.catch(err => {
+    console.error('Could not connect to MongoDB:', err.message);
+});
 // Routes
 app.get('/', async (req, res) => {
     const matches = await Match.find();
