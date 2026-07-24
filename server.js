@@ -53,5 +53,18 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
+// Admin Page - To see and add matches
+app.get('/admin', (req, res) => {
+    res.render('admin');
+});
+
+// Post Match Logic
+app.post('/admin/add-match', async (req, res) => {
+    const { title, entryFee, prize, time, map, version } = req.body;
+    const newMatch = new Match({ title, entryFee, prize, time, map, version });
+    await newMatch.save();
+    res.redirect('/');
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
