@@ -1,29 +1,57 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
+const session = require('express-session');
+const User = require('./models/User');
+const Match = require('./models/Match');
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-
 // Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // এটি ফোল্ডার চিনতে সাহায্য করবে
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
 
 // Database Connection
-const dbURI = process.env.MONGODB_URI;
-if (dbURI) {
-    mongoose.connect(dbURI)
-        .then(() => console.log('MongoDB Connected...'))
-        .catch(err => console.log('DB Connection Error:', err));
-}
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => console.log('Connected to MongoDB Atlas'))
+.catch(err => console.log('DB Error:', err));
 
 // Routes
-app.get('/', (req, res) => {
-    res.render('index');
+app.get('/', async (req, res) => {
+    const matches = await Match.find();
+    res.render('index', { matches, user: req.session.user });
 });
 
-// Server Listen
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.get('/register', (req, res) => res.render('register'));
+
+app.post('/register', async (req, res) => {
+    const { username, email, password, uid } = req.body;
+    const newUser = new User({ username, email, password, uid });
+    await newUser.save();
+    res.redirect('/login');
 });
+
+app.get('/login', (req, res) => res.render('login'));
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email, password });
+    if (user) {
+        req.session.user = user;
+        res.redirect('/');
+    } else {
+        res.send('Invalid email or password');
+    }
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
