@@ -10,39 +10,48 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(session({
-    secret: 'secret-key',
+    secret: 'makeyourtourff_secure_key',
     resave: false,
     saveUninitialized: true
 }));
 
 // Database Connection
 const dbURI = process.env.MONGODB_URI;
-if (!dbURI) {
-    console.error("MONGODB_URI is not defined in environment variables!");
+mongoose.connect(dbURI)
+.then(() => console.log('Connected to MongoDB Atlas'))
+.catch(err => console.error('DB Connection Error:', err));
+
+// --- Middleware to check if user is logged in ---
+function isLogged(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
 }
 
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(() => console.log('Connected to MongoDB Atlas'))
-.catch(err => {
-    console.error('Could not connect to MongoDB:', err.message);
-});
-// Routes
-app.get('/', async (req, res) => {
-    const matches = await Match.find();
-    res.render('index', { matches, user: req.session.user });
+// --- ROUTES ---
+
+// 1. Home Page (Redirects to Login if not logged in)
+app.get('/', isLogged, async (req, res) => {
+    try {
+        const matches = await Match.find().sort({ _id: -1 });
+        res.render('index', { matches, user: req.session.user });
+    } catch (err) { res.send(err.message); }
 });
 
+// 2. Auth Routes
 app.get('/register', (req, res) => res.render('register'));
-
 app.post('/register', async (req, res) => {
-    const { username, email, password, uid } = req.body;
-    const newUser = new User({ username, email, password, uid });
-    await newUser.save();
-    res.redirect('/login');
+    try {
+        const { username, email, password, uid } = req.body;
+        const newUser = new User({ username, email, password, uid });
+        await newUser.save();
+        res.redirect('/login');
+    } catch (err) { res.send("Email already exists!"); }
 });
 
 app.get('/login', (req, res) => res.render('login'));
-
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email, password });
@@ -50,87 +59,64 @@ app.post('/login', async (req, res) => {
         req.session.user = user;
         res.redirect('/');
     } else {
-        res.send('Invalid email or password');
+        res.send('Invalid email or password. <a href="/login">Try again</a>');
     }
 });
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.redirect('/');
+    res.redirect('/login');
 });
 
-// Admin Page - To see and add matches
-app.get('/admin', (req, res) => {
-    res.render('admin');
-});
-
-// Post Match Logic
-app.post('/admin/add-match', async (req, res) => {
-    const { title, entryFee, prize, time, map, version } = req.body;
-    const newMatch = new Match({ title, entryFee, prize, time, map, version });
-    await newMatch.save();
-    res.redirect('/');
-});
-// Get Match Details
-app.get('/match/:id', async (req, res) => {
+// 3. Match Details & Joining
+app.get('/match/:id', isLogged, async (req, res) => {
     const match = await Match.findById(req.params.id);
     res.render('match-details', { match, user: req.session.user });
 });
 
-// Join Match Page
-app.get('/join-match/:id', (req, res) => {
-    if(!req.session.user) return res.redirect('/login');
+app.get('/join-match/:id', isLogged, (req, res) => {
     res.render('join', { matchId: req.params.id });
 });
 
-// Post Join Logic
-app.post('/join-match/:id', async (req, res) => {
+app.post('/join-match/:id', isLogged, async (req, res) => {
     const { playerName, uid, teamType } = req.body;
     const match = await Match.findById(req.params.id);
     const user = await User.findById(req.session.user._id);
 
-    if(user.wallet < match.entryFee) {
-        return res.send("Insufficient Balance! Please add money.");
-    }
+    if (user.wallet < match.entryFee) return res.send("Insufficient Balance!");
 
-    // Deduct Balance & Add to Match
     user.wallet -= match.entryFee;
     match.joinedPlayers.push({ username: playerName, uid: uid, teamType: teamType });
     
     await user.save();
     await match.save();
-    
+    req.session.user = user; // Update session balance
     res.redirect('/match/' + match._id);
 });
-// Admin Dashboard Route - Shows all matches
+
+// 4. Admin Panel
 app.get('/admin', async (req, res) => {
-    // এখানে আপনি একটি পাসওয়ার্ড প্রোটেকশন দিতে পারেন
     const matches = await Match.find().sort({ _id: -1 });
     res.render('admin', { matches });
 });
 
-// Logic: Create New Match
 app.post('/admin/add-match', async (req, res) => {
     try {
         const newMatch = new Match(req.body);
         await newMatch.save();
         res.redirect('/admin');
-    } catch (err) {
-        res.send("Error creating match: " + err.message);
-    }
+    } catch (err) { res.send(err.message); }
 });
 
-// Logic: Update Room ID/Pass
 app.post('/admin/update-room/:id', async (req, res) => {
     const { roomID, roomPass } = req.body;
     await Match.findByIdAndUpdate(req.params.id, { roomID, roomPass });
     res.redirect('/admin');
 });
 
-// Logic: Delete Match (Optional)
-app.get('/admin/delete/:id', async (req, res) => {
-    await Match.findByIdAndDelete(req.params.id);
-    res.redirect('/admin');
+// 5. Profile Page
+app.get('/profile', isLogged, (req, res) => {
+    res.render('profile', { user: req.session.user });
 });
 
 const PORT = process.env.PORT || 3000;
