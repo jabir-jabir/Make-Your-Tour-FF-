@@ -71,6 +71,37 @@ app.post('/admin/add-match', async (req, res) => {
     await newMatch.save();
     res.redirect('/');
 });
+// Get Match Details
+app.get('/match/:id', async (req, res) => {
+    const match = await Match.findById(req.params.id);
+    res.render('match-details', { match, user: req.session.user });
+});
+
+// Join Match Page
+app.get('/join-match/:id', (req, res) => {
+    if(!req.session.user) return res.redirect('/login');
+    res.render('join', { matchId: req.params.id });
+});
+
+// Post Join Logic
+app.post('/join-match/:id', async (req, res) => {
+    const { playerName, uid, teamType } = req.body;
+    const match = await Match.findById(req.params.id);
+    const user = await User.findById(req.session.user._id);
+
+    if(user.wallet < match.entryFee) {
+        return res.send("Insufficient Balance! Please add money.");
+    }
+
+    // Deduct Balance & Add to Match
+    user.wallet -= match.entryFee;
+    match.joinedPlayers.push({ username: playerName, uid: uid, teamType: teamType });
+    
+    await user.save();
+    await match.save();
+    
+    res.redirect('/match/' + match._id);
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
