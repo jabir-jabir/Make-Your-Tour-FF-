@@ -102,6 +102,36 @@ app.post('/join-match/:id', async (req, res) => {
     
     res.redirect('/match/' + match._id);
 });
+// Admin Dashboard Route - Shows all matches
+app.get('/admin', async (req, res) => {
+    // এখানে আপনি একটি পাসওয়ার্ড প্রোটেকশন দিতে পারেন
+    const matches = await Match.find().sort({ _id: -1 });
+    res.render('admin', { matches });
+});
+
+// Logic: Create New Match
+app.post('/admin/add-match', async (req, res) => {
+    try {
+        const newMatch = new Match(req.body);
+        await newMatch.save();
+        res.redirect('/admin');
+    } catch (err) {
+        res.send("Error creating match: " + err.message);
+    }
+});
+
+// Logic: Update Room ID/Pass
+app.post('/admin/update-room/:id', async (req, res) => {
+    const { roomID, roomPass } = req.body;
+    await Match.findByIdAndUpdate(req.params.id, { roomID, roomPass });
+    res.redirect('/admin');
+});
+
+// Logic: Delete Match (Optional)
+app.get('/admin/delete/:id', async (req, res) => {
+    await Match.findByIdAndDelete(req.params.id);
+    res.redirect('/admin');
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
