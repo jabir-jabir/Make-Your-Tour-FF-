@@ -1,25 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Admin Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Make Your Tour FF</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .admin-card { background: #0f172a; border: 1px solid #00e5ff; border-radius: 15px; margin-bottom: 20px; }
+        .nav-tabs .nav-link { color: #94a3b8; border: none; }
+        .nav-tabs .nav-link.active { color: #00e5ff; background: none; border-bottom: 3px solid #00e5ff; }
+        input, select { background: #1e293b !important; border: 1px solid #334155 !important; color: white !important; }
+    </small>
 </head>
-<body class="bg-dark text-white p-5">
-    <div class="container card bg-secondary p-4">
-        <h3>Add New Tournament Match</h3>
-        <form action="/admin/add-match" method="POST">
-            <input type="text" name="title" class="form-control mb-2" placeholder="Match Title (e.g. Solo Battle)" required>
-            <input type="number" name="entryFee" class="form-control mb-2" placeholder="Entry Fee (TK)" required>
-            <input type="number" name="prize" class="form-control mb-2" placeholder="Prize Pool (TK)" required>
-            <input type="text" name="time" class="form-control mb-2" placeholder="Match Time (e.g. 9:00 PM)" required>
-            <input type="text" name="map" class="form-control mb-2" placeholder="Map (Bermuda/Purgatory)" required>
-            <select name="version" class="form-control mb-2">
-                <option value="Solo">Solo</option>
-                <option value="Duo">Duo</option>
-                <option value="Squad">Squad</option>
-            </select>
-            <button class="btn btn-success w-100">Publish Match</button>
-        </form>
+<body class="bg-dark text-white">
+
+    <div class="container py-4">
+        <h2 class="text-primary mb-4"><i class="fas fa-user-shield"></i> Admin Control Panel</h2>
+
+        <!-- Tabs for Different Sections -->
+        <ul class="nav nav-tabs mb-4" id="adminTabs">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#addMatch">Add Match</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#manageMatches">Room IDs</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#results">Results</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#payments">Deposits</a></li>
+        </ul>
+
+        <div class="tab-content">
+            
+            <!-- 1. ADD MATCH SECTION -->
+            <div class="tab-pane fade show active" id="addMatch">
+                <div class="admin-card p-4">
+                    <h5 class="text-primary mb-3">Create New Tournament</h5>
+                    <form action="/admin/add-match" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Match Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="e.g. BR DUO MATCH" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Entry Fee</label>
+                                <input type="number" name="entryFee" class="form-control" placeholder="TK" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Total Prize</label>
+                                <input type="number" name="prize" class="form-control" placeholder="TK" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Per Kill</label>
+                                <input type="number" name="perKill" class="form-control" placeholder="TK" default="0">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Total Slots</label>
+                                <input type="number" name="totalSlots" class="form-control" value="48">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Map</label>
+                                <select name="map" class="form-control">
+                                    <option>Bermuda</option>
+                                    <option>Purgatory</option>
+                                    <option>Kalahari</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Version</label>
+                                <select name="version" class="form-control">
+                                    <option>Solo</option>
+                                    <option>Duo</option>
+                                    <option>Squad</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Date</label>
+                                <input type="date" name="date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Time</label>
+                                <input type="text" name="time" class="form-control" placeholder="e.g. 09:30 PM" required>
+                            </div>
+                        </div>
+                        <button class="btn btn-join mt-2">Publish Tournament</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 2. MANAGE ROOM DETAILS SECTION -->
+            <div class="tab-pane fade" id="manageMatches">
+                <div class="admin-card p-4">
+                    <h5 class="text-primary mb-3">Update Room ID & Password</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th>Match</th>
+                                    <th>Time</th>
+                                    <th>Room ID</th>
+                                    <th>Pass</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% matches.forEach(match => { %>
+                                    <form action="/admin/update-room/<%= match._id %>" method="POST">
+                                        <tr>
+                                            <td><%= match.title %></td>
+                                            <td><%= match.time %></td>
+                                            <td><input type="text" name="roomID" class="form-control form-control-sm" value="<%= match.roomID %>"></td>
+                                            <td><input type="text" name="roomPass" class="form-control form-control-sm" value="<%= match.roomPass %>"></td>
+                                            <td><button class="btn btn-sm btn-primary">Update</button></td>
+                                        </tr>
+                                    </form>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. PAYMENTS & RESULTS (Placeholder for now) -->
+            <div class="tab-pane fade" id="payments">
+                <div class="admin-card p-4 text-center">
+                    <p class="text-muted">Payment requests will appear here after setting up Wallet Logic.</p>
+                </div>
+            </div>
+
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
