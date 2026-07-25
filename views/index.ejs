@@ -11,49 +11,69 @@
 <body>
 
     <!-- Header -->
-    <div class="p-3 d-flex justify-content-between">
+    <div class="p-3 d-flex justify-content-between align-items-center">
         <h4 class="fw-bold" style="color: var(--primary);">Make Your Tour FF</h4>
-        <div class="badge bg-dark p-2">৳<%= user ? user.wallet : 0 %></div>
+        <div class="badge bg-dark p-2" style="font-size: 1.1rem; border: 1px solid var(--primary);">
+            ৳<%= user ? user.wallet : 0 %>
+        </div>
     </div>
 
-    <!-- Banner (Image slider placeholder) -->
+    <!-- Banner -->
     <div class="container mb-3">
-        <div style="background: linear-gradient(to right, #004e92, #000428); height: 150px; border-radius: 15px; display:flex; align-items:center; padding: 20px;">
-            <h3>কিভাবে ম্যাচ খেলবেন?</h3>
+        <div style="background: linear-gradient(135deg, #004e92, #00d2ff); height: 160px; border-radius: 15px; display:flex; align-items:center; padding: 20px; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);">
+            <h3 class="fw-bold">কিভাবে ম্যাচ খেলবেন?</h3>
         </div>
     </div>
 
     <!-- Notice Bar -->
-    <div class="notice-bar">
+    <div class="notice-bar mx-3">
         <i class="fas fa-bullhorn me-2 text-warning"></i>
-        <marquee class="small">আপনাদের যেকোনো প্রয়োজনে আমাদের টেলিগ্রাম সাপোর্ট এ যোগাযোগ করুন।</marquee>
+        <marquee class="small">Welcome to Make Your Tour FF! নতুন টুর্নামেন্টে জয়েন করুন এবং জিতে নিন আকর্ষণীয় পুরস্কার।</marquee>
     </div>
 
-    <!-- Categories like Screenshot 4 -->
-    <div class="container">
-        <h5 class="mb-3">FREE FIRE</h5>
-        <div class="row g-3">
-            <div class="col-6">
-                <div class="category-card">
-                    <span class="category-tag">BR</span>
-                    <img src="https://via.placeholder.com/150" alt="Duo">
-                    <div class="p-2 text-center small fw-bold">BR DUO MATCH</div>
+    <!-- Free Fire Matches Section -->
+    <div class="container mt-4">
+        <h5 class="mb-3"><i class="fas fa-fire text-danger"></i> UPCOMING MATCHES</h5>
+        <div class="row">
+            <% if(matches && matches.length > 0) { %>
+                <% matches.forEach(match => { %>
+                    <div class="col-12 mb-3">
+                        <div class="match-item p-3 shadow-sm">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="fw-bold text-uppercase text-primary"><%= match.title %></h6>
+                                <span class="badge bg-danger"><%= match.version %></span>
+                            </div>
+                            <div class="match-info-grid my-2">
+                                <div class="match-info-box">
+                                    <small>WIN PRIZE</small>
+                                    <p>৳<%= match.prize %></p>
+                                </div>
+                                <div class="match-info-box">
+                                    <small>PER KILL</small>
+                                    <p>৳<%= match.perKill || 5 %></p>
+                                </div>
+                                <div class="match-info-box">
+                                    <small>ENTRY FEE</small>
+                                    <p>৳<%= match.entryFee %></p>
+                                </div>
+                            </div>
+                            <!-- inter-connection link -->
+                            <a href="/match/<%= match._id %>" class="btn btn-join w-100">JOIN NOW</a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="text-center p-5">
+                    <p class="text-muted">No matches available right now.</p>
                 </div>
-            </div>
-            <div class="col-6">
-                <div class="category-card">
-                    <span class="category-tag">BR</span>
-                    <img src="https://via.placeholder.com/150" alt="Solo">
-                    <div class="p-2 text-center small fw-bold">BR SOLO MATCH</div>
-                </div>
-            </div>
+            <% } %>
         </div>
     </div>
 
     <!-- Bottom Nav Bar -->
     <div class="bottom-nav">
         <a href="/" class="nav-tab active"><i class="fas fa-gamepad"></i>Play</a>
-        <a href="/my-matches" class="nav-tab"><i class="fas fa-list-ul"></i>My Matches</a>
+        <a href="/my-matches" class="nav-tab"><i class="fas fa-list-ul"></i>Matches</a>
         <a href="/results" class="nav-tab"><i class="fas fa-poll"></i>Results</a>
         <a href="/profile" class="nav-tab"><i class="fas fa-user-circle"></i>Profile</a>
     </div>
