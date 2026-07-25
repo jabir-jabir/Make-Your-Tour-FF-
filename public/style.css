@@ -1,71 +1,77 @@
 :root {
-    --bg-color: #050811;
-    --surface-color: #111827;
-    --primary-color: #00d2ff; /* Neon Cyan */
-    --secondary-color: #9d50bb; /* Purple */
-    --text-main: #ffffff;
-    --text-dim: #94a3b8;
-    --accent-gradient: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+    --bg-color: #050811; /* Deep Royal Blue Dark */
+    --card-bg: #0f172a; /* Lighter Blue for Cards */
+    --primary: #00e5ff; /* Neon Cyan */
+    --text-white: #ffffff;
+    --text-gray: #94a3b8;
+    --accent: #1e293b;
 }
 
 body {
     background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding-bottom: 70px; /* For Bottom Nav */
+    color: var(--text-white);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding-bottom: 80px;
 }
 
-/* Glassmorphism Card */
-.match-card {
-    background: var(--surface-color);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-}
-
-.card-header-img {
-    height: 120px;
-    background: var(--accent-gradient);
+/* Notice Bar like Screenshot */
+.notice-bar {
+    background: var(--accent);
+    padding: 10px;
+    margin: 15px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 1.2rem;
+    border-left: 4px solid var(--primary);
 }
 
-.btn-primary-custom {
-    background: var(--accent-gradient);
-    border: none;
-    color: white;
-    font-weight: 600;
-    border-radius: 8px;
-    padding: 10px;
-    transition: 0.3s;
+/* Category Grid like Screenshot */
+.category-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(0, 229, 255, 0.1);
+}
+.category-card img { width: 100%; height: 120px; object-fit: cover; }
+.category-tag {
+    position: absolute; top: 10px; right: 10px;
+    background: #ff0055; color: white; padding: 2px 8px;
+    border-radius: 5px; font-size: 10px; font-weight: bold;
 }
 
-/* Bottom Navigation like App */
+/* Match Card Structure (Exact) */
+.match-item {
+    background: var(--card-bg);
+    margin: 15px; border-radius: 15px;
+    padding: 15px; border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.match-info-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    text-align: center; margin-top: 15px;
+}
+.match-info-box small { color: var(--text-gray); font-size: 11px; }
+.match-info-box p { margin: 0; font-weight: bold; color: var(--primary); }
+
+/* Progress Bar */
+.progress {
+    height: 6px; background: #1e293b; border-radius: 10px; margin: 10px 0;
+}
+.progress-bar { background: var(--primary); }
+
+/* Bottom Nav (Exact as Screenshot) */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #0f172a;
-    display: flex;
-    justify-content: space-around;
-    padding: 12px 0;
+    position: fixed; bottom: 0; width: 100%;
+    background: #0a0f1d; display: flex;
+    justify-content: space-around; padding: 10px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 1000;
 }
+.nav-tab { text-align: center; color: var(--text-gray); text-decoration: none; font-size: 12px; }
+.nav-tab i { display: block; font-size: 20px; margin-bottom: 2px; }
+.nav-tab.active { color: var(--primary); }
 
-.nav-item {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.8rem;
-    text-align: center;
-}
-
-.nav-item.active {
-    color: var(--primary-color);
-  }
+/* Buttons */
+.btn-join {
+    background: var(--primary); color: #000;
+    font-weight: bold; border-radius: 8px; width: 100%; padding: 10px; border: none;
+        }
