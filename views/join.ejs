@@ -1,0 +1,22 @@
+<body class="bg-dark text-white">
+    <div class="container p-4">
+        <h4 class="text-primary">Join Match</h4>
+        <div class="card bg-secondary p-3 mt-3">
+            <form action="/join-match/<%= matchId %>" method="POST">
+                <label>Game Name</label>
+                <input type="text" name="playerName" class="form-control mb-3" placeholder="Enter Game Name" required>
+                
+                <label>Game UID</label>
+                <input type="text" name="uid" class="form-control mb-3" placeholder="Enter UID" required>
+
+                <label>Select Type</label>
+                <select name="teamType" class="form-control mb-4">
+                    <option value="Solo">Solo</option>
+                    <option value="Duo">Duo</option>
+                </select>
+
+                <button class="btn btn-join">Confirm Join</button>
+            </form>
+        </div>
+    </div>
+</body>
