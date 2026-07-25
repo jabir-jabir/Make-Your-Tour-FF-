@@ -1,0 +1,71 @@
+:root {
+    --bg-color: #050811;
+    --surface-color: #111827;
+    --primary-color: #00d2ff; /* Neon Cyan */
+    --secondary-color: #9d50bb; /* Purple */
+    --text-main: #ffffff;
+    --text-dim: #94a3b8;
+    --accent-gradient: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding-bottom: 70px; /* For Bottom Nav */
+}
+
+/* Glassmorphism Card */
+.match-card {
+    background: var(--surface-color);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+.card-header-img {
+    height: 120px;
+    background: var(--accent-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.btn-primary-custom {
+    background: var(--accent-gradient);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+/* Bottom Navigation like App */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #0f172a;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+}
+
+.nav-item {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+  }
