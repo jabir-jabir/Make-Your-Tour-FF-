@@ -4,12 +4,20 @@ const matchSchema = new mongoose.Schema({
     title: String,
     entryFee: Number,
     prize: Number,
+    perKill: { type: Number, default: 0 },
     time: String,
+    date: String,
     map: String,
-    version: String, // Solo, Duo, Squad
-    roomID: { type: String, default: 'Will be given before match' },
-    roomPass: { type: String, default: 'Wait...' },
-    joinedPlayers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+    version: String, // Solo/Duo/Squad
+    totalSlots: { type: Number, default: 48 },
+    joinedPlayers: [{ 
+        username: String, 
+        uid: String,
+        teamType: String // Solo or Duo
+    }],
+    roomID: { type: String, default: 'Locked' },
+    roomPass: { type: String, default: 'Locked' },
+    status: { type: String, default: 'Open' } // Open/Full/Started/Finished
 });
 
 module.exports = mongoose.model('Match', matchSchema);
