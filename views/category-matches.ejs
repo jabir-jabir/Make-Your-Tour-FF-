@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= type %> Matches - Make Your Tour FF</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body style="background-color: #050811; color: white;">
+
+    <!-- Back Button Header -->
+    <div class="p-3 border-bottom border-secondary d-flex align-items-center">
+        <a href="/" class="text-white me-3"><i class="fas fa-chevron-left"></i></a>
+        <h6 class="mb-0">FreeFire <%= type %> Matches</h6>
+    </div>
+
+    <div class="container mt-3">
+        <% if(matches.length > 0) { %>
+            <% matches.forEach(match => { %>
+                <div class="match-item p-3 mb-3" style="background: #0f172a; border-radius: 15px; border: 1px solid rgba(0, 229, 255, 0.1);">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="fw-bold text-primary text-uppercase"><%= match.title %></h6>
+                        <span class="badge bg-success">#<%= match._id.toString().slice(-5) %></span>
+                    </div>
+                    <p class="small text-muted"><%= match.time %> | <%= match.map %></p>
+
+                    <div class="match-info-grid">
+                        <div class="match-info-box"><small>WIN PRIZE</small><p>৳<%= match.prize %></p></div>
+                        <div class="match-info-box"><small>PER KILL</small><p>৳<%= match.perKill %></p></div>
+                        <div class="match-info-box"><small>ENTRY FEE</small><p>৳<%= match.entryFee %></p></div>
+                    </div>
+
+                    <a href="/match/<%= match._id %>" class="btn btn-join w-100 mt-3">JOIN NOW</a>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="text-center mt-5">
+                <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No <%= type %> matches found right now!</p>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Bottom Nav Bar -->
+    <div class="bottom-nav">
+        <a href="/" class="nav-tab active"><i class="fas fa-gamepad"></i>Play</a>
+        <a href="/my-matches" class="nav-tab"><i class="fas fa-list-ul"></i>Matches</a>
+        <a href="/results" class="nav-tab"><i class="fas fa-poll"></i>Results</a>
+        <a href="/profile" class="nav-tab"><i class="fas fa-user-circle"></i>Profile</a>
+    </div>
+</body>
+</html>
