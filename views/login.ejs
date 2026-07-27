@@ -1,28 +1,52 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - FF Tournament</title>
+    <title>Login - Make Your Tour FF</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>body { background: #0f0f0f; color: white; }.card { background: #1a1a1a; border: 1px solid #ff4d00; }</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body class="d-flex align-items-center vh-100">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card p-4 shadow">
-                    <h3 class="text-center text-warning">Player Login</h3>
-                    <form action="/login" method="POST">
-                        <input type="email" name="email" class="form-control mb-3" placeholder="Email Address" required>
-                        <input type="password" name="password" class="form-control mb-3" placeholder="Password" required>
-                        <button class="btn btn-warning w-100 fw-bold">Login</button>
-                    </form>
-                    <p class="mt-3 text-center">New player? <a href="/register" class="text-warning">Register Now</a></p>
-                </div>
-            </div>
+<body style="background-color: var(--bg-color);">
+
+    <div class="auth-container">
+        <!-- Logo Area -->
+        <div class="auth-logo">
+            <i class="fas fa-gamepad fa-3x text-primary"></i>
         </div>
+
+        <h1 class="auth-title">Welcome Back !</h1>
+        <p class="auth-subtitle">Secure match access</p>
+
+        <form action="/login" method="POST">
+            <div class="input-group-custom">
+                <i class="fas fa-user"></i>
+                <input type="email" name="email" placeholder="Email Address" required>
+            </div>
+
+            <div class="input-group-custom">
+                <i class="fas fa-key"></i>
+                <input type="password" name="password" placeholder="Password" id="passInput" required>
+                <i class="fas fa-eye" style="margin-left:auto; cursor:pointer;" onclick="togglePass()"></i>
+            </div>
+
+            <div class="d-flex justify-content-between small px-2">
+                <div><input type="checkbox"> Remember me</div>
+                <a href="#" style="color: var(--primary); text-decoration: none;">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-auth">Log In</button>
+        </form>
+
+        <a href="/register" class="auth-link">Don't have an account? <span>Register</span></a>
     </div>
+
+    <script>
+        function togglePass() {
+            var x = document.getElementById("passInput");
+            if (x.type === "password") { x.type = "text"; } else { x.type = "password"; }
+        }
+    </script>
 </body>
 </html>
