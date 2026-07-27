@@ -7,65 +7,137 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/style.css">
+    <style>
+        /* স্লাইডার স্টাইল */
+        .carousel-item { height: 180px; border-radius: 15px; overflow: hidden; }
+        .carousel-item div { height: 100%; display: flex; align-items: center; padding: 20px; }
+        
+        /* ক্যাটাগরি কার্ড গ্রিড স্টাইল (ছবির মতো) */
+        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .category-card { 
+            background: #0f172a; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            position: relative; 
+            border: 1px solid rgba(0, 229, 255, 0.1);
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+        .category-card img { width: 100%; height: 110px; object-fit: cover; opacity: 0.7; }
+        .category-tag { 
+            position: absolute; top: 10px; right: 10px; 
+            background: #ff0055; font-size: 10px; padding: 2px 6px; 
+            border-radius: 4px; font-weight: bold; 
+        }
+        .category-title { padding: 10px; font-size: 12px; font-weight: bold; text-align: center; background: #1e293b; }
+        .match-count { font-size: 10px; color: #94a3b8; display: block; }
+    </style>
 </head>
-<body>
+<body style="background-color: #050811;">
 
     <!-- Header -->
     <div class="p-3 d-flex justify-content-between align-items-center">
         <h4 class="fw-bold" style="color: var(--primary);">Make Your Tour FF</h4>
-        <div class="badge bg-dark p-2" style="font-size: 1.1rem; border: 1px solid var(--primary);">
+        <div class="badge bg-dark p-2" style="border: 1px solid var(--primary);">
             ৳<%= user ? user.wallet : 0 %>
         </div>
     </div>
 
-    <!-- Banner -->
+    <!-- 1. SLIDER BANNER (Bootstrap Carousel) -->
     <div class="container mb-3">
-        <div style="background: linear-gradient(135deg, #004e92, #00d2ff); height: 160px; border-radius: 15px; display:flex; align-items:center; padding: 20px; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);">
-            <h3 class="fw-bold">কিভাবে ম্যাচ খেলবেন?</h3>
+        <div id="bannerSlider" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner shadow-lg">
+                <div class="carousel-item active">
+                    <div style="background: linear-gradient(135deg, #004e92, #00d2ff); border-radius: 15px;">
+                        <h3 class="fw-bold">কিভাবে ম্যাচ খেলবেন?</h3>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div style="background: linear-gradient(135deg, #9d50bb, #6e48aa); border-radius: 15px;">
+                        <h3 class="fw-bold">প্রতি কিলের জন্য ৫ টাকা!</h3>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Notice Bar -->
     <div class="notice-bar mx-3">
         <i class="fas fa-bullhorn me-2 text-warning"></i>
-        <marquee class="small">Welcome to Make Your Tour FF! নতুন টুর্নামেন্টে জয়েন করুন এবং জিতে নিন আকর্ষণীয় পুরস্কার।</marquee>
+        <marquee class="small">আপনাদের যেকোনো প্রয়োজনে আমাদের টেলিগ্রাম সাপোর্ট এ যোগাযোগ করুন।</marquee>
     </div>
 
-    <!-- Free Fire Matches Section -->
-    <div class="container mt-4">
-        <h5 class="mb-3"><i class="fas fa-fire text-danger"></i> UPCOMING MATCHES</h5>
+    <!-- 2. FREE FIRE CATEGORY GRID (হুবহু স্ক্রিনশট ৪ এর মতো) -->
+    <div class="container mt-4 mb-5">
+        <h5 class="mb-3 text-uppercase fw-bold text-gray">FREE FIRE</h5>
+        
+        <div class="category-grid">
+            <!-- BR DUO -->
+            <a href="#matches-section" class="category-card">
+                <span class="category-tag">BR</span>
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400" alt="Duo">
+                <div class="category-title">
+                    BR DUO MATCH
+                    <span class="match-count">10 matches found</span>
+                </div>
+            </a>
+
+            <!-- BR SOLO -->
+            <a href="#matches-section" class="category-card">
+                <span class="category-tag">BR</span>
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400" alt="Solo">
+                <div class="category-title">
+                    BR SOLO MATCH
+                    <span class="match-count">5 matches found</span>
+                </div>
+            </a>
+
+            <!-- BR SQUAD -->
+            <a href="#matches-section" class="category-card">
+                <span class="category-tag">BS</span>
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=400" alt="Squad">
+                <div class="category-title">
+                    BR SQUAD SURVIVAL
+                    <span class="match-count">3 matches found</span>
+                </div>
+            </a>
+
+            <!-- HEADSHOT -->
+            <a href="#matches-section" class="category-card">
+                <span class="category-tag">HEAD</span>
+                <img src="https://images.unsplash.com/photo-1614027164847-1b2809eb189d?auto=format&fit=crop&w=400" alt="Headshot">
+                <div class="category-title">
+                    HEADHOST MOOD
+                    <span class="match-count">2 matches found</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. UPCOMING MATCHES SECTION (যেখানে আসল ম্যাচগুলো দেখাবে) -->
+    <div class="container mt-4" id="matches-section">
+        <h5 class="mb-3 text-uppercase"><i class="fas fa-fire text-danger"></i> UPCOMING MATCHES</h5>
         <div class="row">
             <% if(matches && matches.length > 0) { %>
                 <% matches.forEach(match => { %>
                     <div class="col-12 mb-3">
-                        <div class="match-item p-3 shadow-sm">
+                        <div class="match-item p-3" style="background: #0f172a; border-radius: 15px; border: 1px solid rgba(0, 229, 255, 0.1);">
                             <div class="d-flex justify-content-between">
-                                <h6 class="fw-bold text-uppercase text-primary"><%= match.title %></h6>
+                                <h6 class="fw-bold text-primary"><%= match.title %></h6>
                                 <span class="badge bg-danger"><%= match.version %></span>
                             </div>
                             <div class="match-info-grid my-2">
-                                <div class="match-info-box">
-                                    <small>WIN PRIZE</small>
-                                    <p>৳<%= match.prize %></p>
-                                </div>
-                                <div class="match-info-box">
-                                    <small>PER KILL</small>
-                                    <p>৳<%= match.perKill || 5 %></p>
-                                </div>
-                                <div class="match-info-box">
-                                    <small>ENTRY FEE</small>
-                                    <p>৳<%= match.entryFee %></p>
-                                </div>
+                                <div class="match-info-box"><small>WIN PRIZE</small><p>৳<%= match.prize %></p></div>
+                                <div class="match-info-box"><small>PER KILL</small><p>৳<%= match.perKill || 5 %></p></div>
+                                <div class="match-info-box"><small>ENTRY FEE</small><p>৳<%= match.entryFee %></p></div>
                             </div>
-                            <!-- inter-connection link -->
                             <a href="/match/<%= match._id %>" class="btn btn-join w-100">JOIN NOW</a>
                         </div>
                     </div>
                 <% }) %>
             <% } else { %>
-                <div class="text-center p-5">
-                    <p class="text-muted">No matches available right now.</p>
-                </div>
+                <p class="text-center text-muted p-4">ম্যাচ শেষ হলে ক্যাটাগরি গ্রিড থেকে ম্যাচ সিলেক্ট করুন।</p>
             <% } %>
         </div>
     </div>
@@ -78,5 +150,6 @@
         <a href="/profile" class="nav-tab"><i class="fas fa-user-circle"></i>Profile</a>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
