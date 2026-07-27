@@ -7,6 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/style.css">
+    <style>
+        /* ডিজাইন ঠিক রাখার জন্য অতিরিক্ত CSS */
+        .category-card { text-decoration: none !important; color: white !important; display: block; }
+        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    </style>
 </head>
 <body style="background-color: #050811;">
 
@@ -18,10 +23,10 @@
         </div>
     </div>
 
-    <!-- Dynamic Slider Banner -->
+    <!-- ডাইনামিক স্লাইডার ব্যানার -->
     <div class="container mb-3">
-        <div id="bannerSlider" class="carousel slide shadow-lg" data-bs-ride="carousel">
-            <div class="carousel-inner" style="border-radius: 15px;">
+        <div id="bannerSlider" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner shadow-lg" style="border-radius: 15px;">
                 <% if(banners && banners.length > 0) { %>
                     <% banners.forEach((banner, index) => { %>
                         <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
@@ -30,8 +35,8 @@
                     <% }) %>
                 <% } else { %>
                     <div class="carousel-item active">
-                        <div style="background: linear-gradient(135deg, #004e92, #00d2ff); height: 180px; display:flex; align-items:center; justify-content:center;">
-                            <h3 class="text-white">ব্যানার নেই</h3>
+                        <div style="background: linear-gradient(135deg, #004e92, #00d2ff); height: 180px; display:flex; align-items:center; justify-content:center; border-radius: 15px;">
+                            <h3 class="text-white">ব্যানার অ্যাড করুন</h3>
                         </div>
                     </div>
                 <% } %>
@@ -45,34 +50,30 @@
         <marquee class="small">আপনাদের যেকোনো প্রয়োজনে আমাদের টেলিগ্রাম সাপোর্ট এ যোগাযোগ করুন।</marquee>
     </div>
 
-    <!-- Categories Section (হুবহু স্ক্রিনশট ৪ এর মতো) -->
+    <!-- ক্যাটাগরি গ্রিড -->
     <div class="container mt-4 mb-5">
         <h5 class="mb-3 text-uppercase fw-bold text-secondary">FREE FIRE</h5>
         <div class="category-grid">
             <a href="/category/BR-Duo" class="category-card">
-                <span class="category-tag">BR</span>
-                <img src="https://via.placeholder.com/400x200/0f172a/00e5ff?text=BR+DUO" alt="Duo">
-                <div class="category-title">BR DUO MATCH</div>
+                <div class="card bg-dark border-0">
+                    <img src="/images/duo.jpg" class="card-img-top" style="height: 110px; object-fit: cover; opacity: 0.8;">
+                    <div class="card-body p-2 text-center" style="background: #1e293b; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                        <span class="small fw-bold">BR DUO MATCH</span>
+                    </div>
+                </div>
             </a>
             <a href="/category/BR-Solo" class="category-card">
-                <span class="category-tag">BR</span>
-                <img src="https://via.placeholder.com/400x200/0f172a/00e5ff?text=BR+SOLO" alt="Solo">
-                <div class="category-title">BR SOLO MATCH</div>
-            </a>
-            <a href="/category/BR-Squad" class="category-card">
-                <span class="category-tag">BS</span>
-                <img src="https://via.placeholder.com/400x200/0f172a/00e5ff?text=BR+SQUAD" alt="Squad">
-                <div class="category-title">BR SQUAD SURVIVAL</div>
-            </a>
-            <a href="/category/CS-Mode" class="category-card">
-                <span class="category-tag">CS</span>
-                <img src="https://via.placeholder.com/400x200/0f172a/00e5ff?text=CLASH+SQUAD" alt="CS">
-                <div class="category-title">CLASH SQUAD</div>
+                <div class="card bg-dark border-0">
+                    <img src="/images/solo.jpg" class="card-img-top" style="height: 110px; object-fit: cover; opacity: 0.8;">
+                    <div class="card-body p-2 text-center" style="background: #1e293b; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                        <span class="small fw-bold">BR SOLO MATCH</span>
+                    </div>
+                </div>
             </a>
         </div>
     </div>
 
-    <!-- Bottom Nav Bar -->
+    <!-- Bottom Nav -->
     <div class="bottom-nav">
         <a href="/" class="nav-tab active"><i class="fas fa-gamepad"></i>Play</a>
         <a href="/my-matches" class="nav-tab"><i class="fas fa-list-ul"></i>Matches</a>
