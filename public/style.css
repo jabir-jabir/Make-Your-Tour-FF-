@@ -70,6 +70,76 @@ body {
 .nav-tab i { display: block; font-size: 20px; margin-bottom: 2px; }
 .nav-tab.active { color: var(--primary); }
 
+:root {
+    --bg-color: #050811;
+    --card-bg: #0f172a;
+    --primary: #00e5ff; /* Neon Cyan */
+    --text-white: #ffffff;
+    --input-bg: #1e293b;
+}
+
+/* Auth Page Layout */
+.auth-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.auth-logo {
+    width: 100px;
+    height: 100px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    margin: 50px auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--primary);
+}
+
+.auth-title { font-size: 2rem; font-weight: bold; margin-bottom: 5px; }
+.auth-subtitle { color: #94a3b8; margin-bottom: 30px; font-size: 0.9rem; }
+
+/* Input Styling like Screenshots */
+.input-group-custom {
+    background: var(--input-bg);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+}
+.input-group-custom i { color: #64748b; margin-right: 15px; }
+.input-group-custom input {
+    background: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    outline: none;
+}
+
+/* Button Styling like Screenshots */
+.btn-auth {
+    background: var(--primary);
+    color: #000;
+    font-weight: bold;
+    width: 100%;
+    padding: 14px;
+    border-radius: 30px; /* Rounded button */
+    border: none;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.auth-link {
+    margin-top: 30px;
+    color: #94a3b8;
+    display: block;
+    text-decoration: none;
+}
+.auth-link span { color: var(--primary); font-weight: bold; }
 /* Buttons */
 .btn-join {
     background: var(--primary); color: #000;
